@@ -2,7 +2,8 @@
 #define METODOS_H
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
+#include <windows.h> // Pra Função de Tempo 
 #include <math.h>
 
 double Bissec(char funcao[], double Pos_esq, double Pos_dir, double Precisao);

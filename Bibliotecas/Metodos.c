@@ -1,5 +1,7 @@
 #include "Metodos.h"
 
+double PcFreq = 0.0;
+__int64 CounterStart = 0;
 
 double func(double x){
     double fun;
@@ -12,12 +14,35 @@ double df(double x){
     float deriv;
 	deriv = exp(x) - 3;
 	return(deriv);
+}
 
 
+// Inicia ao contador do tempo; 
+void startCounter(){
+    LARGE_INTEGER li;
+
+    if(!QueryPerformanceFrequency(&li)){
+        printf("QueryPerfomanceFrenquecy falhou");
+        exit(2);
+    }
+
+    PcFreq = (double) li.QuadPart/1000.0;  // ms
+
+    QueryPerformanceCounter(&li);
+    CounterStart = li.QuadPart;
+}
+
+
+// Retorna o tempo de execução 
+double getCounter(){
+    LARGE_INTEGER li;
+    QueryPerformanceCounter(&li);
+    return(li.QuadPart - CounterStart)/PcFreq;
 }
 
 
 double Bissec(char funcao[], double Pos_esq, double Pos_dir, double Precisao){
+    startCounter();
     int iter = 0;
     double raiz, xmed, F_xmed;
 
@@ -35,14 +60,18 @@ double Bissec(char funcao[], double Pos_esq, double Pos_dir, double Precisao){
 
     } while (F_xmed > Precisao);
 
+
+
     raiz = xmed;
     printf("Convergiu apos %d iteracoes: raiz = %.9f\n", iter, raiz);
-
+    printf("O tempo de execucao foi: %lf\n", getCounter());
     return raiz;
     
 }
 
 double FalsaPos(char funcao[], double Pos_esq, double Pos_dir, double Precisao){
+    startCounter();
+
     int iter = 0;
     double raiz, xmed, F_xmed = 1, erro;
 
@@ -64,12 +93,13 @@ double FalsaPos(char funcao[], double Pos_esq, double Pos_dir, double Precisao){
     
     
     printf("Convergiu apos %4d iteracoes para a raiz = %10.9lf\n", iter, raiz);
-    
+    printf("O tempo de execucao foi: %lf\n", getCounter());
     return raiz;
 }
 
 
 double NewtonRaphson(char funcao[], double x0, char derivadafx[], double Precisao){
+    startCounter();
     int iter = 0;
     double xn, F_xn = 1, raiz;
 
@@ -84,11 +114,12 @@ double NewtonRaphson(char funcao[], double x0, char derivadafx[], double Precisa
     
     raiz = xn;
     printf("Convergiu apos %5d iteracoes para a raiz = %10.6lf\n", iter, raiz);
-
+    printf("O tempo de execucao foi: %lf\n", getCounter());
     return raiz;
 }
 
 double Secante(char funcao[], double x0, double x1, double Precisao){
+    startCounter();
     int iter = 0;
     double fxm = 1.0, xMedio, raiz;
 
@@ -106,6 +137,6 @@ double Secante(char funcao[], double x0, double x1, double Precisao){
     
     raiz = xMedio;
     printf("Convergiu apos %4d iteracoes para a raiz = %10.6lf\n", iter, raiz);
-    
+    printf("O tempo de execucao foi: %lf\n", getCounter());
     return raiz;
 }
