@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 4.1.0)
 # Nome do projeto
 project(AproximadorDeZeros C)
 
-message("Compilando Projeto")
+message("1º Etapa da Compilação")
 
 # Usar a versão padrão da linguagem C
 set(CMAKE_C_STANDARD 99)
