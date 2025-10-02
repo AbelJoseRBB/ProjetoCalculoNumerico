@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gráfico de Eficiência de Métodos Numéricos</title>
+
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Gráfico de Eficiência de Métodos Numéricos    </h1>
+      <p class="subtitle">Comparação do tempo de execução dos métodos</p>
+    </header>
+
+    <section class="card">
+      <canvas id="efficiencyChart" width="800" height="450"></canvas>
+    </section>
+
+    <footer class="footer">
+      <small>Dados carregados de <code>resultado.json</code> (se existir)</small>
+    </footer>
+  </main>
+
+  <!-- Script da aplicação -->
+  <script src="script.js"></script>
+</body>
+</html>
