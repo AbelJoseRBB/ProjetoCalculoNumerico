@@ -23,11 +23,11 @@ def menu():
         if op == 1:
             a = float(input("A: "))
             b = float(input("B: "))
-            Bissec(func,a, b, PRECISAO)
+            Bissec(func, a, b, PRECISAO, x)
         elif op == 2:
             a = float(input("A: "))
             b = float(input("B: "))
-            FalsaPos(func, a, b, PRECISAO)
+            FalsaPos(func, a, b, PRECISAO, x)
         elif op == 3:
             x0 = float(input("x0: "))
             NewtonRaphson(func, derivate, x0, PRECISAO)
