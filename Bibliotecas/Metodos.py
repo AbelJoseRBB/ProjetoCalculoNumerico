@@ -43,7 +43,7 @@ def FalsaPos(func ,xe, xd, precisao, x):
     while f_xmed > precisao:
         iter += 1
         xm = (xe * func.subs(x, xd) - xd * func.subs(x, xe)) / (func.subs(x, xd) - func.subs(x, xe))
-        if func.subs(x, a) * func.subs(x, b) > 0 :
+        if func.subs(x, xe) * func.subs(x, xd) > 0 :
             xe = xm
         else:
             xd = xm
