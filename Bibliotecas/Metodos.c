@@ -51,7 +51,7 @@ double Bissec(char funcao[], double Pos_esq, double Pos_dir, double Precisao){
         xmed = (Pos_esq + Pos_dir) / 2.0;   // força divisão real
         F_xmed = fabs(func(xmed));
 
-        if (func(Pos_esq) * func(xmed) > 0)
+        if (func(Pos_esq) * func(Pos_dir) > 0)
             Pos_esq = xmed;
         else
             Pos_dir = xmed;

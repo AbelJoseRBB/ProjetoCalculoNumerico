@@ -2,6 +2,7 @@ import math
 import time 
 import sympy as sp
 
+maxIter = 1000
 x = sp.Symbol('x')
 
 def df(x):
@@ -10,14 +11,18 @@ def df(x):
 def getTime(funcao):
     def wrapper(*args, **kwargs):
         start = time.time()
-        result = funcao(*args, **kwargs)
+        result, interacoes = funcao(*args, **kwargs)
         end = time.time()
-        print(f"O tempo de execucao foi: {end - start: .6f} segundos")
-        return result
+        tempo = end - start
+        return{
+            "raiz": float(result),
+            "iteracoes": interacoes,
+            "tempo": tempo
+        }
     return wrapper
 
 @getTime
-def Bissec(func ,a, b, precisao):
+def Bissec(func, a, b, precisao):
     iter = 0
     while True:
         iter += 1
@@ -31,9 +36,9 @@ def Bissec(func ,a, b, precisao):
 
         print(f"Iteracao {iter} | f(xm) = {f_xm:.6f} | xm = {xm:.6f}")
 
-        if(f_xm <= precisao):
+        if(f_xm <= precisao or iter >= maxIter):
             print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-            return xm
+            return xm, iter
 
 @getTime
 def FalsaPos(func ,a, b, precisao):
@@ -42,7 +47,7 @@ def FalsaPos(func ,a, b, precisao):
     while f_xmed > precisao:
         iter += 1
         xm = (a * func.subs(x, b) - b * func.subs(x, a)) / (func.subs(x, b) - func.subs(x, a))
-        if func.subs(x, a) * func.subs(x, b) > 0 :
+        if (func.subs(x, a) * func.subs(x, b)) > 0 :
             a = xm
         else:
             b = xm
@@ -50,7 +55,7 @@ def FalsaPos(func ,a, b, precisao):
         f_xmed = abs(func.subs(x, xm))
         print(f"Iteracao {iter} | f(x) = {f_xmed:.6f} | xm = {xm:.6f}")
     print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-    return xm
+    return xm, iter
 
 @getTime
 def NewtonRaphson(func, derivate, x0, precisao):
@@ -63,7 +68,7 @@ def NewtonRaphson(func, derivate, x0, precisao):
         print(f"Iteracao {iter} | f(x) = {f_xn:.6f}")
         x0 = xn
     print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f}")
-    return xn
+    return xn, iter
 
 @getTime
 def Secante(func, x0, x1, precisao):
@@ -79,5 +84,5 @@ def Secante(func, x0, x1, precisao):
 
         print(f"Iteracao {iter} | f(x) = {f_xm:.6f}")
     print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-    return xm
+    return xm, iter
 

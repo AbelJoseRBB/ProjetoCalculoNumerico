@@ -1,45 +1,53 @@
 from Bibliotecas.Metodos import Bissec, FalsaPos, NewtonRaphson, Secante
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import sympy as sp
 
 PRECISAO = 1e-6
 x = sp.Symbol('x')
+app = Flask(__name__)
+CORS(app)
+    
+# ---- API -----
+@app.route("/resolver", methods = ["POST"])
 
-def menu():
-    while  True:
-        print("\nDigite a funcao desejada: ")
-        func_str = str(input("Funcao: "))
-        func = sp.sympify(func_str)
-        derivate = sp.diff(func, x)
+def resolver():
+    dados = request.json
 
-        print("\nSelecione o metodo que deseja utilizar:")
-        print("1 - Bisseccao")
-        print("2 - Falsa Posicao")
-        print("3 - Newton-Raphson")
-        print("4 - Secante")
-        print("0 - Sair")
+    # Função simbólica vinda do frontend
+    func_str = dados.get("funcao")
+    if not func_str:
+        return jsonify({"erro: Função não informada"}), 400
+    
+    metodo = dados.get("metodo")
+    precisao = dados.get("precisao", PRECISAO)
 
-        op = int(input("\n Selecione um Metodo: "))
+    func = sp.sympify(func_str)
+    derivate = sp.diff(func, x)
 
-        if op == 1:
-            a = float(input("A: "))
-            b = float(input("B: "))
-            Bissec(func,a, b, PRECISAO)
-        elif op == 2:
-            a = float(input("A: "))
-            b = float(input("B: "))
-            FalsaPos(func, a, b, PRECISAO)
-        elif op == 3:
-            x0 = float(input("x0: "))
-            NewtonRaphson(func, derivate, x0, PRECISAO)
-        elif op == 4:
-            x0 = float(input("x0: "))
-            x1 = float(input("x1: "))
-            Secante(func, x0, x1, PRECISAO)
-        elif op == 0:
-            break
-        else:
-            print("Opção inválida!")
-
+    if metodo == "Bissec":
+        a = dados.get("a")
+        b = dados.get("b")
+        result = Bissec(func ,a, b, precisao)
+    elif metodo == "FalsaPos":
+        a, b = dados.get("a"), dados.get("b")
+        result = FalsaPos(func, a, b, precisao)
+    elif metodo == "NewtonRaphson":
+        x0 = dados.get("x0")
+        result = NewtonRaphson(func, derivate, x0, precisao)
+    elif metodo == "Secante":
+        x0 = dados.get("x0")
+        x1 = dados.get("x1")
+        result = Secante(func, x0, x1, precisao)
+    else:
+        return jsonify({"erro: Método Inválido"}), 400
+    
+    return jsonify({
+        "funcao": func_str,
+        "metodo": metodo,
+        **result
+    })
+        
 if __name__ == "__main__":
-    menu()  
+    app.run(debug=True) 
 

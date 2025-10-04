@@ -8,22 +8,49 @@
   <!-- CSS externo -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Chart.js (CDN) -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <main class="container">
     <header>
-      <h1>Gráfico de Eficiência de Métodos Numéricos    </h1>
-      <p class="subtitle">Comparação do tempo de execução dos métodos</p>
+      <h1>Comparador de Métodos Numéricos</h1>
+      <p class="subtitle">Escolha a função, o método e os parâmetros</p>
     </header>
 
+    <!-- Formulário -->
+    <section class="card">
+      <form id="calcForm">
+        <label>Função f(x):</label>
+        <input type="text" id="funcao" placeholder="ex: exp(x) - 3*x" required />
+
+        <label>Método:</label>
+        <select id="metodo">
+          <option value="Bissec">Bissecção</option>
+          <option value="FalsaPos">Falsa Posição</option>
+          <option value="NewtonRaphson">Newton-Raphson</option>
+          <option value="Secante">Secante</option>
+        </select>
+
+        <!-- Campos de parâmetros -->
+        <div id="parametros"></div>
+
+        <button type="submit">Calcular</button>
+      </form>
+
+      <form id="calcForm"> ... </form>
+      <div id="resultadoTexto" style="margin-top:12px;"></div>
+
+    </section>
+    
+
+    <!-- Gráfico -->
     <section class="card">
       <canvas id="efficiencyChart" width="800" height="450"></canvas>
     </section>
 
     <footer class="footer">
-      <small>Dados carregados de <code>resultado.json</code> (se existir)</small>
+      <small>Resultados carregados via API Flask</small>
     </footer>
   </main>
 
