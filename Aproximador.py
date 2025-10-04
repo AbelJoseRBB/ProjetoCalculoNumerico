@@ -28,7 +28,7 @@ def resolver():
     if metodo == "Bissec":
         a = dados.get("a")
         b = dados.get("b")
-        result = Bissec(func ,a, b, precisao)
+        result = Bissec(func, a, b, precisao)
     elif metodo == "FalsaPos":
         a, b = dados.get("a"), dados.get("b")
         result = FalsaPos(func, a, b, precisao)

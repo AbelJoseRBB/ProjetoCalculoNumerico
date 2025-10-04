@@ -2,8 +2,8 @@ import math
 import time 
 import sympy as sp
 
-maxIter = 1000
 x = sp.Symbol('x')
+MaxIter = 100
 
 def df(x):
     return math.exp(x) - 3
@@ -22,35 +22,35 @@ def getTime(funcao):
     return wrapper
 
 @getTime
-def Bissec(func, a, b, precisao):
+def Bissec(func, xe, xd, precisao):
     iter = 0
     while True:
         iter += 1
-        xm = (a + b)/2.0
+        xm = (xe + xd)/2.0
         f_xm = abs(func.subs(x, xm))
 
-        if(func.subs(x, a) * func.subs(x, b) > 0):
-            a = xm
+        if(func.subs(x, xe) * func.subs(x, xm) > 0):
+            xe = xm
         else:
-            b = xm
+            xd = xm
 
         print(f"Iteracao {iter} | f(xm) = {f_xm:.6f} | xm = {xm:.6f}")
 
-        if(f_xm <= precisao or iter >= maxIter):
+        if(f_xm <= precisao or iter >= MaxIter):
             print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
             return xm, iter
 
 @getTime
-def FalsaPos(func ,a, b, precisao):
+def FalsaPos(func, xe, xd, precisao):
     iter = 0
     f_xmed = 1
     while f_xmed > precisao:
         iter += 1
-        xm = (a * func.subs(x, b) - b * func.subs(x, a)) / (func.subs(x, b) - func.subs(x, a))
-        if (func.subs(x, a) * func.subs(x, b)) > 0 :
-            a = xm
+        xm = (xe * func.subs(x, xd) - xd * func.subs(x, xe)) / (func.subs(x, xd) - func.subs(x, xe))
+        if func.subs(x, xe) * func.subs(x, xd) > 0 :
+            xe = xm
         else:
-            b = xm
+            xd = xm
 
         f_xmed = abs(func.subs(x, xm))
         print(f"Iteracao {iter} | f(x) = {f_xmed:.6f} | xm = {xm:.6f}")
