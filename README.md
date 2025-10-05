@@ -15,9 +15,12 @@ O projeto foi implementado por meio da linguagem de programação Python. A segu
 Antes de rodar o programa, é preciso baixar algumas dependências para que o código possa ser executado corretamente.
 
 1. **Python**
+
 Claro que, como o projeto é implementado em Python, é necessário que o Python esteja instalado no seu sistema. Recomendamos a última versão da linguagem, para evitar qualquer tipo de erro.
 <br />
+
 2. **Bibliotecas**
+
 No nosso projeto, utilizamos algumas bibliotecas para permitir o uso interativo do programa. Primeiro, a biblioteca _sympy_ é responsável por receber o input da função do usuário e permite o cálculo de _f(x)_ e de sua respectiva derivada. 
 
 ```bash
@@ -32,6 +35,7 @@ pip install flask flask-cors
 <br />
 
 3. **Extensão do VSCode**
+
 Por fim, recomendamos a instalação da extensão **Live Server** do VSCode para facilitar a abertura de um servidor local.
 
 ### Execução
