@@ -1,53 +1,73 @@
-# Projeto de zeros de funções
-Projeto da disciplina de Cálculo Numerico com objetivo de implementar e 
-compreender os métodos iterativos para encontrar zeros de funções.
+# 🧮 Projeto de Zeros de Funções  
 
-## Métodos abordados
-- Método da Bissecção
-- Método da Falsa Posição
-- Método de Newton-Raphson
-- Método da Secante
+Projeto desenvolvido para a disciplina de **Cálculo Numérico**, com o objetivo de **implementar e compreender métodos iterativos** utilizados para encontrar zeros de funções.
 
-## Como Utilizar?
-O projeto foi implementado por meio da linguagem de programação Python. A seguir, estão os passos para executar o programa.
+---
 
-### Dependências
-Antes de rodar o programa, é preciso baixar algumas dependências para que o código possa ser executado corretamente.
+## 🎓 Métodos Abordados  
+- 🔹 **Método da Bissecção**  
+- 🔹 **Método da Falsa Posição**  
+- 🔹 **Método de Newton-Raphson**  
+- 🔹 **Método da Secante**
 
-1. **Python**
+---
 
-Claro que, como o projeto é implementado em Python, é necessário que o Python esteja instalado no seu sistema. Recomendamos a última versão da linguagem, para evitar qualquer tipo de erro.
-<br />
+## Como Utilizar  
 
-2. **Bibliotecas**
+O projeto foi implementado em **Python**.  
+A seguir, estão os passos necessários para executá-lo corretamente.
 
-No nosso projeto, utilizamos algumas bibliotecas para permitir o uso interativo do programa. Primeiro, a biblioteca _sympy_ é responsável por receber o input da função do usuário e permite o cálculo de _f(x)_ e de sua respectiva derivada. 
+### 📦 Dependências  
 
-```bash
-pip install sympy
-```
+Antes de rodar o programa, é necessário instalar algumas dependências.
 
-Também temos a biblioteca _flask_ que utilizamos para realizar a comunicação entre a interface web e o backend em python
+1. **Python**  
+   Como o projeto foi desenvolvido em Python, é essencial que ele esteja instalado em seu sistema.  
+   Recomenda-se utilizar a **versão mais recente** da linguagem para evitar incompatibilidades.  
+   <br />
 
-```bash
-pip install flask flask-cors
-```
-<br />
+2. **Bibliotecas**  
+   Foram utilizadas algumas bibliotecas para permitir a interação entre o código e a interface web.  
 
-3. **Extensão do VSCode**
+   📘 A biblioteca **Sympy** é responsável por interpretar a função inserida pelo usuário, além de calcular f(x) e sua respectiva derivada:  
+   ```bash
+   pip install sympy
+   ```
 
-Por fim, recomendamos a instalação da extensão **Live Server** do VSCode para facilitar a abertura de um servidor local.
+   🌐 Já a biblioteca **Flask** é usada para realizar a comunicação entre a interface web e o backend em Python:  
+   ```bash
+   pip install flask flask-cors
+   ```
+   <br />
 
-### Execução
-Para rodar o programa, execute a seguinte linha no terminal:
+3. **Extensão do VSCode**  
+   💡 Recomendamos a instalação da extensão **Live Server** no VSCode para facilitar a abertura de um servidor local e o uso da interface web.
+
+---
+
+### ▶️ Execução  
+
+Para executar o programa, utilize o seguinte comando no terminal:  
+
 ```bash
 python Aproximador.py
 ```
 
-## Funcionamento
-O projeto funciona a partir da interface web, após a execução do arquivo _Aproximador.py_ e a abertura do servidor local a partir do extensão _Live Server_, o usuário interage com a página inserindo a função que deseja achar alguma raíz e selecionando o método desejado. Com isso, um gráfico será exibido com o número de iterações e também com tempo de execução de cada método, o que facilita a comparação de resultados entre eles.
+---
+
+## 💻 Funcionamento  
+
+O projeto funciona por meio de uma **interface web interativa**.  
+Após executar o arquivo _Aproximador.py_ e iniciar o servidor local com o **Live Server**, o usuário poderá:
+
+1. Inserir a função desejada ✏️  
+2. Escolher o método numérico 🔍  
+3. Visualizar os resultados em **gráficos comparativos** 📊  
+
+Esses gráficos exibem o **número de iterações** e o **tempo de execução (em milissegundos)** de cada método, facilitando a análise e comparação de desempenho entre eles.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/0d3e240f-b72a-4f67-bf7e-9a8aa825c40c">
-  <h4 align="center">Interface Web</h4>
+  <h4 align="center"> Interface Web do Projeto </h4>
 </p>
+

@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =============================
-// 🔹 Envia os dados ao backend
+// 🔹 Envia os dados ao backend Flask
 // =============================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -100,8 +100,10 @@ form.addEventListener("submit", async (e) => {
 });
 
 // =============================
-// 🔹 Criação inicial dos gráficos (formato padrão)
+// 🔹 Criação inicial dos gráficos (com valores visíveis)
 // =============================
+Chart.register(ChartDataLabels);
+
 function criarGraficos() {
   if (chartIter) chartIter.destroy();
   if (chartTime) chartTime.destroy();
@@ -121,17 +123,28 @@ function criarGraficos() {
     }
   };
 
+  // ---------- Gráfico de Iterações ----------
   chartIter = new Chart(ctxIter, {
     type: "bar",
     data: {
       labels: ordemMetodos,
       datasets: [{
         label: "Iterações",
-        data: [null, null, null, null], // mantém formato visual limpo
+        data: [null, null, null, null],
         backgroundColor: ordemMetodos.map(m => cores[m])
       }]
     },
     options: {
+      plugins: {
+        legend: legendaSemCor,
+        datalabels: {
+          color: "white",
+          anchor: "end",
+          align: "top",
+          font: { weight: "bold" },
+          formatter: (value) => (value ? Math.round(value) : "")
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -139,11 +152,12 @@ function criarGraficos() {
           ticks: { color: "white", precision: 0 }
         },
         x: { ticks: { color: "white" } }
-      },
-      plugins: { legend: legendaSemCor }
-    }
+      }
+    },
+    plugins: [ChartDataLabels]
   });
 
+  // ---------- Gráfico de Tempo ----------
   chartTime = new Chart(ctxTime, {
     type: "bar",
     data: {
@@ -155,6 +169,16 @@ function criarGraficos() {
       }]
     },
     options: {
+      plugins: {
+        legend: legendaSemCor,
+        datalabels: {
+          color: "white",
+          anchor: "end",
+          align: "top",
+          font: { weight: "bold" },
+          formatter: (value) => (value ? value.toFixed(2) : "")
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
@@ -162,14 +186,14 @@ function criarGraficos() {
           ticks: { color: "white" }
         },
         x: { ticks: { color: "white" } }
-      },
-      plugins: { legend: legendaSemCor }
-    }
+      }
+    },
+    plugins: [ChartDataLabels]
   });
 }
 
 // =============================
-// 🔹 Atualiza gráficos com novos resultados
+// 🔹 Atualiza gráficos com os novos dados
 // =============================
 function atualizarGraficos(resultado) {
   const idx = ordemMetodos.indexOf(resultado.metodo);
