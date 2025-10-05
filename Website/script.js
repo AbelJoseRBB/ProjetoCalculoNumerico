@@ -10,13 +10,15 @@ let chartIter, chartTime;
 
 const ordemMetodos = ["Bissec", "FalsaPos", "NewtonRaphson", "Secante"];
 const cores = {
-  Bissec: "#ff5252",
-  FalsaPos: "#4caf50",
-  NewtonRaphson: "#ffeb3b",
-  Secante: "#2196f3"
+  Bissec: "#ff5252",          // vermelho
+  FalsaPos: "#4caf50",        // verde
+  NewtonRaphson: "#ffeb3b",   // amarelo
+  Secante: "#2196f3"          // azul
 };
 
-// Atualiza parâmetros conforme método
+// =============================
+// 🔹 Atualiza parâmetros conforme método
+// =============================
 function atualizarParametros() {
   const metodo = metodoSelect.value;
   parametrosDiv.innerHTML = "";
@@ -45,6 +47,16 @@ function atualizarParametros() {
 metodoSelect.addEventListener("change", atualizarParametros);
 atualizarParametros();
 
+// =============================
+// 🔹 Cria os gráficos vazios no carregamento
+// =============================
+document.addEventListener("DOMContentLoaded", () => {
+  criarGraficos();
+});
+
+// =============================
+// 🔹 Envia os dados ao backend
+// =============================
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -62,25 +74,38 @@ form.addEventListener("submit", async (e) => {
     payload.x1 = parseFloat(document.getElementById("x1").value);
   }
 
-  const res = await fetch("http://127.0.0.1:5000/resolver", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const res = await fetch("http://127.0.0.1:5000/resolver", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
-  const resultado = await res.json();
+    if (!res.ok) throw new Error("Erro ao se comunicar com o servidor Flask.");
 
-  resultadoTexto.innerHTML = `
-    <p><strong>Método:</strong> ${resultado.metodo}</p>
-    <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
-    <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
-    <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
-  `;
+    const resultado = await res.json();
 
-  atualizarGraficos(resultado);
+    resultadoTexto.innerHTML = `
+      <p><strong>Método:</strong> ${resultado.metodo}</p>
+      <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
+      <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
+      <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
+    `;
+
+    atualizarGraficos(resultado);
+  } catch (error) {
+    console.error(error);
+    resultadoTexto.innerHTML = `<p style="color:red;">Erro: não foi possível se conectar ao backend.</p>`;
+  }
 });
 
+// =============================
+// 🔹 Criação inicial dos gráficos (formato padrão)
+// =============================
 function criarGraficos() {
+  if (chartIter) chartIter.destroy();
+  if (chartTime) chartTime.destroy();
+
   const legendaSemCor = {
     labels: {
       color: "white",
@@ -88,7 +113,7 @@ function criarGraficos() {
         const dataset = chart.data.datasets[0];
         return [{
           text: dataset.label,
-          fillStyle: "transparent", // remove o quadrado colorido
+          fillStyle: "transparent",
           strokeStyle: "transparent",
           hidden: false
         }];
@@ -102,7 +127,7 @@ function criarGraficos() {
       labels: ordemMetodos,
       datasets: [{
         label: "Iterações",
-        data: Array(ordemMetodos.length).fill(0),
+        data: [null, null, null, null], // mantém formato visual limpo
         backgroundColor: ordemMetodos.map(m => cores[m])
       }]
     },
@@ -125,7 +150,7 @@ function criarGraficos() {
       labels: ordemMetodos,
       datasets: [{
         label: "Tempo (ms)",
-        data: Array(ordemMetodos.length).fill(0),
+        data: [null, null, null, null],
         backgroundColor: ordemMetodos.map(m => cores[m])
       }]
     },
@@ -143,9 +168,13 @@ function criarGraficos() {
   });
 }
 
+// =============================
+// 🔹 Atualiza gráficos com novos resultados
+// =============================
 function atualizarGraficos(resultado) {
   const idx = ordemMetodos.indexOf(resultado.metodo);
 
+  // garante que os gráficos existam
   if (!chartIter || !chartTime) criarGraficos();
 
   chartIter.data.datasets[0].data[idx] = resultado.iteracoes;

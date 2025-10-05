@@ -46,3 +46,8 @@ python Aproximador.py
 
 ## Funcionamento
 O projeto funciona a partir da interface web, após a execução do arquivo _Aproximador.py_ e a abertura do servidor local a partir do extensão _Live Server_, o usuário interage com a página inserindo a função que deseja achar alguma raíz e selecionando o método desejado. Com isso, um gráfico será exibido com o número de iterações e também com tempo de execução de cada método, o que facilita a comparação de resultados entre eles.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d3e240f-b72a-4f67-bf7e-9a8aa825c40c">
+  <h4 align="center">Interface Web</h4>
+</p>
