@@ -2,19 +2,21 @@ const form = document.getElementById("calcForm");
 const metodoSelect = document.getElementById("metodo");
 const parametrosDiv = document.getElementById("parametros");
 const resultadoTexto = document.getElementById("resultadoTexto");
-const ctx = document.getElementById("efficiencyChart");
 
-let chart;
+const ctxIter = document.getElementById("iterationsChart");
+const ctxTime = document.getElementById("timeChart");
 
-// ordem fixa
+let chartIter, chartTime;
+
 const ordemMetodos = ["Bissec", "FalsaPos", "NewtonRaphson", "Secante"];
 const cores = {
-  Bissec: "red",
-  FalsaPos: "green",
-  NewtonRaphson: "yellow",
-  Secante: "blue"
+  Bissec: "#ff5252",
+  FalsaPos: "#4caf50",
+  NewtonRaphson: "#ffeb3b",
+  Secante: "#2196f3"
 };
 
+// Atualiza parâmetros conforme método
 function atualizarParametros() {
   const metodo = metodoSelect.value;
   parametrosDiv.innerHTML = "";
@@ -65,54 +67,90 @@ form.addEventListener("submit", async (e) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   });
+
   const resultado = await res.json();
 
-  // mostra raiz em texto
   resultadoTexto.innerHTML = `
     <p><strong>Método:</strong> ${resultado.metodo}</p>
     <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
+    <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
+    <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
   `;
 
-  atualizarGrafico(resultado);
+  atualizarGraficos(resultado);
 });
 
-function atualizarGrafico(resultado) {
-  const metodo = resultado.metodo;
-  const idx = ordemMetodos.indexOf(metodo);
-
-  if (!chart) {
-    chart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ordemMetodos,
-        datasets: [
-          {
-            label: "Iterações",
-            data: Array(ordemMetodos.length).fill(0),
-            backgroundColor: ordemMetodos.map(m => cores[m])
-          },
-          {
-            label: "Tempo (s)",
-            data: Array(ordemMetodos.length).fill(0),
-            backgroundColor: ordemMetodos.map(m => cores[m]),
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: { beginAtZero: true, ticks: { color: "white" } },
-          x: { ticks: { color: "white" } }
-        },
-        plugins: {
-          legend: { labels: { color: "white" } }
-        }
+function criarGraficos() {
+  const legendaSemCor = {
+    labels: {
+      color: "white",
+      generateLabels: (chart) => {
+        const dataset = chart.data.datasets[0];
+        return [{
+          text: dataset.label,
+          fillStyle: "transparent", // remove o quadrado colorido
+          strokeStyle: "transparent",
+          hidden: false
+        }];
       }
-    });
-  }
+    }
+  };
 
-  chart.data.datasets[0].data[idx] = resultado.iteracoes;
-  chart.data.datasets[1].data[idx] = resultado.tempo;
-  chart.update();
+  chartIter = new Chart(ctxIter, {
+    type: "bar",
+    data: {
+      labels: ordemMetodos,
+      datasets: [{
+        label: "Iterações",
+        data: Array(ordemMetodos.length).fill(0),
+        backgroundColor: ordemMetodos.map(m => cores[m])
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "Número de Iterações", color: "white" },
+          ticks: { color: "white", precision: 0 }
+        },
+        x: { ticks: { color: "white" } }
+      },
+      plugins: { legend: legendaSemCor }
+    }
+  });
+
+  chartTime = new Chart(ctxTime, {
+    type: "bar",
+    data: {
+      labels: ordemMetodos,
+      datasets: [{
+        label: "Tempo (ms)",
+        data: Array(ordemMetodos.length).fill(0),
+        backgroundColor: ordemMetodos.map(m => cores[m])
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "Tempo de Execução (ms)", color: "white" },
+          ticks: { color: "white" }
+        },
+        x: { ticks: { color: "white" } }
+      },
+      plugins: { legend: legendaSemCor }
+    }
+  });
+}
+
+function atualizarGraficos(resultado) {
+  const idx = ordemMetodos.indexOf(resultado.metodo);
+
+  if (!chartIter || !chartTime) criarGraficos();
+
+  chartIter.data.datasets[0].data[idx] = resultado.iteracoes;
+  chartIter.update();
+
+  chartTime.data.datasets[0].data[idx] = resultado.tempo * 1000; // s -> ms
+  chartTime.update();
 }

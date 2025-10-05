@@ -1,68 +1,99 @@
-:root{
-  --bg: #000;          /* fundo preto */
-  --text: #fff;        /* texto branco */
-  --accent: #4fc3f7;   /* azul clarinho pros destaques */
-  --radius: 8px;
-  font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+:root {
+  --bg: #0a0a0a;
+  --panel: #121212;
+  --accent: #4fc3f7;
+  --text: #f5f5f5;
+  --muted: #999;
+  --radius: 10px;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  background: var(--bg);   /* fundo preto */
-  color: var(--text);      /* texto branco */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:28px;
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  padding: 24px;
 }
 
-.container{ width:100%; max-width:900px; }
+.container { width: 100%; max-width: 1100px; }
 
-header{ margin-bottom:18px; display:flex; flex-direction:column; gap:6px; }
-h1{ margin:0; font-size:1.6rem; }
-.subtitle{ margin:0; color: var(--accent); font-size:0.95rem; }
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+h1 { font-size: 1.8rem; margin: 0; }
+.subtitle { color: var(--accent); font-size: 1rem; }
 
-.card{
-  background: #111;  /* blocos em cinza bem escuro */
+.card {
+  background: var(--panel);
   border-radius: var(--radius);
-  padding:18px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.7);
-  border:1px solid rgba(255,255,255,0.1);
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-canvas{ display:block; max-width:100%; height:auto; background:#000; }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 input, select, button {
-  padding: 6px 10px;
+  padding: 8px 10px;
   border-radius: var(--radius);
-  border: 1px solid rgba(255,255,255,0.3);
-  background: #222;      /* caixas de input em cinza escuro */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #222;
   color: var(--text);
 }
 
 button {
-  cursor: pointer;
   background: var(--accent);
   color: #000;
   font-weight: bold;
-  transition: 0.2s;
+  cursor: pointer;
+  transition: 0.25s;
+}
+button:hover { opacity: 0.85; }
+
+.charts-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.charts-grid .card {
+  flex: 1;
+  min-width: 400px;
 }
 
-button:hover {
-  opacity: 0.85;
+h2 {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 8px;
 }
 
-.footer{ margin-top:12px; font-size:0.85rem; text-align:right; color: #888; }
+canvas {
+  background: #000;
+  border-radius: var(--radius);
+  padding: 10px;
+}
 
-@media (max-width:640px){
-  h1{font-size:1.2rem}
-  .card{padding:12px}
+.resultado {
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.footer {
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 800px) {
+  .charts-grid { flex-direction: column; }
 }

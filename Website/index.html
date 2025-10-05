@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Gráfico de Eficiência de Métodos Numéricos</title>
 
-  <!-- CSS externo -->
   <link rel="stylesheet" href="style.css">
 
   <!-- Chart.js -->
@@ -15,10 +14,9 @@
   <main class="container">
     <header>
       <h1>Comparador de Métodos Numéricos</h1>
-      <p class="subtitle">Escolha a função, o método e os parâmetros</p>
+      <p class="subtitle">Visualize e compare o desempenho dos métodos</p>
     </header>
 
-    <!-- Formulário -->
     <section class="card">
       <form id="calcForm">
         <label>Função f(x):</label>
@@ -32,28 +30,31 @@
           <option value="Secante">Secante</option>
         </select>
 
-        <!-- Campos de parâmetros -->
         <div id="parametros"></div>
 
         <button type="submit">Calcular</button>
       </form>
-    
-      <div id="resultadoTexto" style="margin-top:12px;"></div>
 
+      <div id="resultadoTexto" class="resultado"></div>
     </section>
-    
 
-    <!-- Gráfico -->
-    <section class="card">
-      <canvas id="efficiencyChart" width="800" height="450"></canvas>
+    <!-- Gráficos lado a lado -->
+    <section class="charts-grid">
+      <div class="card">
+        <h2>Iterações</h2>
+        <canvas id="iterationsChart"></canvas>
+      </div>
+      <div class="card">
+        <h2>Tempo de Execução (ms)</h2>
+        <canvas id="timeChart"></canvas>
+      </div>
     </section>
 
     <footer class="footer">
-      <small>Resultados carregados via API Flask</small>
+      <small>Resultados processados localmente via Flask API</small>
     </footer>
   </main>
 
-  <!-- Script da aplicação -->
   <script src="script.js"></script>
 </body>
 </html>
