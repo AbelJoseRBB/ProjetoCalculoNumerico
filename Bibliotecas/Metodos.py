@@ -2,11 +2,7 @@ import math
 import time 
 import sympy as sp
 
-x = sp.Symbol('x')
 MaxIter = 100
-
-def df(x):
-    return math.exp(x) - 3
 
 def getTime(funcao):
     def wrapper(*args, **kwargs):
@@ -22,14 +18,14 @@ def getTime(funcao):
     return wrapper
 
 @getTime
-def Bissec(func, xe, xd, precisao):
+def Bissec(func, xe, xd, precisao, var):
     iter = 0
     while True:
         iter += 1
         xm = (xe + xd)/2.0
-        f_xm = abs(func.subs(x, xm))
+        f_xm = abs(func.subs(var, xm))
 
-        if(func.subs(x, xe) * func.subs(x, xm) > 0):
+        if(func.subs(var, xe) * func.subs(var, xm) > 0):
             xe = xm
         else:
             xd = xm
@@ -41,44 +37,44 @@ def Bissec(func, xe, xd, precisao):
             return xm, iter
 
 @getTime
-def FalsaPos(func, xe, xd, precisao):
+def FalsaPos(func, xe, xd, precisao, var):
     iter = 0
     f_xmed = 1
-    while f_xmed > precisao:
+    while f_xmed > precisao and iter < MaxIter:
         iter += 1
-        xm = (xe * func.subs(x, xd) - xd * func.subs(x, xe)) / (func.subs(x, xd) - func.subs(x, xe))
-        if func.subs(x, xe) * func.subs(x, xd) > 0 :
+        xm = (xe * func.subs(var, xd) - xd * func.subs(var, xe)) / (func.subs(var, xd) - func.subs(var, xe))
+        if func.subs(var, xe) * func.subs(var, xd) > 0 :
             xe = xm
         else:
             xd = xm
 
-        f_xmed = abs(func.subs(x, xm))
+        f_xmed = abs(func.subs(var, xm))
         print(f"Iteracao {iter} | f(x) = {f_xmed:.6f} | xm = {xm:.6f}")
     print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
     return xm, iter
 
 @getTime
-def NewtonRaphson(func, derivate, x0, precisao):
+def NewtonRaphson(func, derivate, x0, precisao, var):
     iter = 0
     f_xn = 1
     while f_xn > precisao:
         iter += 1
-        xn = x0 - func.subs(x, x0) / derivate.subs(x, x0)
-        f_xn = abs(func.subs(x, x0))
+        xn = x0 - func.subs(var, x0) / derivate.subs(var, x0)
+        f_xn = abs(func.subs(var, x0))
         print(f"Iteracao {iter} | f(x) = {f_xn:.6f}")
         x0 = xn
     print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f}")
     return xn, iter
 
 @getTime
-def Secante(func, x0, x1, precisao):
+def Secante(func, x0, x1, precisao, var):
     iter = 0
     f_xm = 1
 
     while f_xm > precisao:
         iter += 1
-        xm = (x0 * func.subs(x, x1) - x1 * func.subs(x, x0)) / (func.subs(x, x1) - func.subs(x, x0))
-        f_xm = abs(func.subs(x, xm))
+        xm = (x0 * func.subs(var, x1) - x1 * func.subs(var, x0)) / (func.subs(var, x1) - func.subs(var, x0))
+        f_xm = abs(func.subs(var, xm))
         x0 = x1
         x1 = xm
 
