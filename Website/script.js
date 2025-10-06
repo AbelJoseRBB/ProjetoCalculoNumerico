@@ -38,16 +38,16 @@ function atualizarParametros() {
   // Newton-Raphson: só precisa de um chute inicial
   else if (metodo === "NewtonRaphson") {
     parametrosDiv.innerHTML = `
-      <label>x0 (chute inicial):</label>
+      <label>Estimativa Inicial:</label>
       <input type="number" step="any" id="x0" required>
     `;
   } 
   // Secante: precisa de dois chutes iniciais
   else if (metodo === "Secante") {
     parametrosDiv.innerHTML = `
-      <label>x0:</label>
+      <label>Estimativa 1:</label>
       <input type="number" step="any" id="x0" required>
-      <label>x1:</label>
+      <label>Estimativa 2:</label>
       <input type="number" step="any" id="x1" required>
     `;
   }
