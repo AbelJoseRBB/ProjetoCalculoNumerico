@@ -1,5 +1,4 @@
 # Importa bibliotecas necessárias 
-import math
 import time 
 import sympy as sp
 
