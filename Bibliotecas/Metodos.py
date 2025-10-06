@@ -1,15 +1,20 @@
+# Importa bibliotecas necessárias 
 import math
 import time 
 import sympy as sp
 
+# Define o limite de iterações para evitar loops infinitos 
 MaxIter = 100
 
+# Função para medir o tempo de execução e retornar os resultados 
 def getTime(funcao):
     def wrapper(*args, **kwargs):
-        start = time.time()
-        result, interacoes = funcao(*args, **kwargs)
-        end = time.time()
+        start = time.time() # Marca o tempo de início
+        result, interacoes = funcao(*args, **kwargs) 
+        end = time.time() # Marca o tempo de fim 
         tempo = end - start
+
+        # Retorna um dicionário com a raíz, iterações e tempo de exec.  
         return{
             "raiz": float(result),
             "iteracoes": interacoes,
@@ -17,6 +22,8 @@ def getTime(funcao):
         }
     return wrapper
 
+
+# ------------------------- MÉTODO DA BISSECÇÃO -------------------------
 @getTime
 def Bissec(func, xe, xd, precisao, var):
     iter = 0
@@ -36,6 +43,8 @@ def Bissec(func, xe, xd, precisao, var):
             print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
             return xm, iter
 
+
+# ------------------------- MÉTODO DA FALSA POSIÇÃO -------------------------
 @getTime
 def FalsaPos(func, xe, xd, precisao, var):
     iter = 0
@@ -53,6 +62,8 @@ def FalsaPos(func, xe, xd, precisao, var):
     print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
     return xm, iter
 
+
+# ------------------------- MÉTODO DE NEWTON-RAPHSON -------------------------
 @getTime
 def NewtonRaphson(func, derivate, x0, precisao, var):
     iter = 0
@@ -66,6 +77,8 @@ def NewtonRaphson(func, derivate, x0, precisao, var):
     print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f}")
     return xn, iter
 
+
+# ------------------------- MÉTODO DA SECANTE -------------------------
 @getTime
 def Secante(func, x0, x1, precisao, var):
     iter = 0

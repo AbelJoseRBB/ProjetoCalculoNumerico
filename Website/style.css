@@ -1,47 +1,66 @@
+/* ---------- Variáveis globais e configurações básicas ---------- */
 :root {
-  --bg: #0a0a0a;
-  --panel: #121212;
-  --accent: #4fc3f7;
-  --text: #f5f5f5;
-  --muted: #999;
-  --radius: 10px;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
+  --bg: #0a0a0a;           /* Cor de fundo principal */
+  --panel: #121212;        /* Cor de fundo dos painéis (cards) */
+  --accent: #4fc3f7;       /* Cor de destaque (botões, títulos, etc.) */
+  --text: #f5f5f5;         /* Cor do texto padrão */
+  --muted: #999;           /* Cor de texto secundário (rodapé, detalhes) */
+  --radius: 10px;          /* Arredondamento padrão dos elementos */
+  font-family: 'Inter', 'Segoe UI', sans-serif; /* Fonte global */
 }
 
-* { box-sizing: border-box; }
+/* ---------- Reset e estrutura básica ---------- */
+* { box-sizing: border-box; } /* Inclui padding e borda no tamanho total do elemento */
+
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Centraliza o conteúdo principal */
   padding: 24px;
 }
 
-.container { width: 100%; max-width: 1100px; }
+/* ---------- Container principal ---------- */
+.container {
+  width: 100%;
+  max-width: 1100px; /* Limita a largura máxima */
+}
 
+/* ---------- Cabeçalho ---------- */
 header {
   text-align: center;
   margin-bottom: 20px;
 }
-h1 { font-size: 1.8rem; margin: 0; }
-.subtitle { color: var(--accent); font-size: 1rem; }
 
+h1 {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+/* ---------- Cartões (painéis) ---------- */
 .card {
   background: var(--panel);
   border-radius: var(--radius);
   padding: 18px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6); /* Sombra leve */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* ---------- Formulário ---------- */
 form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10px; /* Espaçamento entre os campos */
 }
 
+/* Campos de entrada e botões */
 input, select, button {
   padding: 8px 10px;
   border-radius: var(--radius);
@@ -50,26 +69,33 @@ input, select, button {
   color: var(--text);
 }
 
+/* Botão de envio */
 button {
   background: var(--accent);
   color: #000;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.25s;
+  transition: 0.25s; /* Animação no hover */
 }
-button:hover { opacity: 0.85; }
 
+button:hover {
+  opacity: 0.85;
+}
+
+/* ---------- Seção dos gráficos ---------- */
 .charts-grid {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;              /* Quebra linha se faltar espaço */
   justify-content: space-between;
 }
+
 .charts-grid .card {
   flex: 1;
-  min-width: 400px;
+  min-width: 400px;             /* Garante tamanho mínimo dos gráficos */
 }
 
+/* ---------- Títulos dos gráficos ---------- */
 h2 {
   text-align: center;
   font-size: 1.1rem;
@@ -77,23 +103,27 @@ h2 {
   margin-bottom: 8px;
 }
 
+/* ---------- Gráficos (canvas) ---------- */
 canvas {
   background: #000;
   border-radius: var(--radius);
   padding: 10px;
 }
 
+/* ---------- Resultado numérico ---------- */
 .resultado {
   margin-top: 10px;
   font-size: 0.95rem;
 }
 
+/* ---------- Rodapé ---------- */
 .footer {
   text-align: right;
   color: var(--muted);
   font-size: 0.85rem;
 }
 
+/* ---------- Responsividade ---------- */
 @media (max-width: 800px) {
-  .charts-grid { flex-direction: column; }
+  .charts-grid { flex-direction: column; } /* Empilha os gráficos no celular */
 }

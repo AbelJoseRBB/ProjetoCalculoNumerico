@@ -5,24 +5,30 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Gráfico de Eficiência de Métodos Numéricos</title>
 
+  <!-- Arquivo CSS externo com o estilo da página -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Chart.js -->
+  <!-- Bibliotecas do Chart.js (para gerar gráficos) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
+
 <body>
   <main class="container">
+    <!-- Cabeçalho principal -->
     <header>
       <h1>Comparador de Métodos Numéricos</h1>
       <p class="subtitle">Visualize e compare o desempenho dos métodos</p>
     </header>
 
+    <!-- Seção do formulário -->
     <section class="card">
       <form id="calcForm">
+        <!-- Entrada da função -->
         <label>Função f(x):</label>
         <input type="text" id="funcao" placeholder="ex: exp(x) - 3*x" required />
 
+        <!-- Seleção do método numérico -->
         <label>Método:</label>
         <select id="metodo">
           <option value="Bissec">Bissecção</option>
@@ -31,31 +37,37 @@
           <option value="Secante">Secante</option>
         </select>
 
+        <!-- Espaço para campos adicionais (a, b, x0, x1, etc.) -->
         <div id="parametros"></div>
 
+        <!-- Botão para enviar os dados -->
         <button type="submit">Calcular</button>
       </form>
 
+      <!-- Área onde o resultado numérico será exibido -->
       <div id="resultadoTexto" class="resultado"></div>
     </section>
 
-    <!-- Gráficos lado a lado -->
+    <!-- Seção com os gráficos -->
     <section class="charts-grid">
       <div class="card">
         <h2>Iterações</h2>
-        <canvas id="iterationsChart"></canvas>
+        <canvas id="iterationsChart"></canvas> <!-- Gráfico do número de iterações -->
       </div>
+
       <div class="card">
         <h2>Tempo de Execução (ms)</h2>
-        <canvas id="timeChart"></canvas>
+        <canvas id="timeChart"></canvas> <!-- Gráfico do tempo de execução -->
       </div>
     </section>
 
+    <!-- Rodapé -->
     <footer class="footer">
       <small>Resultados processados localmente via Flask API</small>
     </footer>
   </main>
 
+  <!-- Script JS que controla o envio do formulário e geração dos gráficos -->
   <script src="script.js"></script>
 </body>
 </html>
