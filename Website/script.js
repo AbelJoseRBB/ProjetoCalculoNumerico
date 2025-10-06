@@ -102,6 +102,7 @@ form.addEventListener("submit", async (e) => {
     resultadoTexto.innerHTML = `
       <p><strong>Método:</strong> ${resultado.metodo}</p>
       <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
+      <p><strong>Precisão final:</strong> ${resultado.precisaoFinal.toExponential(2)}</p>
       <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
       <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
     `;

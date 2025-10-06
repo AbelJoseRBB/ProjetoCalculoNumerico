@@ -9,15 +9,16 @@ MaxIter = 100
 def getTime(funcao):
     def wrapper(*args, **kwargs):
         start = time.time() # Marca o tempo de início
-        result, interacoes = funcao(*args, **kwargs) 
+        result, interacoes, precisaoFinal = funcao(*args, **kwargs) 
         end = time.time() # Marca o tempo de fim 
         tempo = end - start
-
+    
         # Retorna um dicionário com a raíz, iterações e tempo de exec.  
         return{
             "raiz": float(result),
             "iteracoes": interacoes,
-            "tempo": tempo
+            "tempo": tempo,
+            "precisaoFinal": float(precisaoFinal)
         }
     return wrapper
 
@@ -39,8 +40,9 @@ def Bissec(func, xe, xd, precisao, var):
         print(f"Iteracao {iter} | f(xm) = {f_xm:.6f} | xm = {xm:.6f}")
 
         if(f_xm <= precisao or iter >= MaxIter):
-            print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-            return xm, iter
+            precisaoFinal = abs(func.subs(var, xm))
+            print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f} | Precisao Final: {float(precisaoFinal)}")
+            return xm, iter, precisaoFinal
 
 
 # ------------------------- MÉTODO DA FALSA POSIÇÃO -------------------------
@@ -51,15 +53,16 @@ def FalsaPos(func, xe, xd, precisao, var):
     while f_xmed > precisao and iter < MaxIter:
         iter += 1
         xm = (xe * func.subs(var, xd) - xd * func.subs(var, xe)) / (func.subs(var, xd) - func.subs(var, xe))
-        if func.subs(var, xe) * func.subs(var, xd) > 0 :
+        if func.subs(var, xe) * func.subs(var, xm) > 0 :
             xe = xm
         else:
             xd = xm
 
         f_xmed = abs(func.subs(var, xm))
         print(f"Iteracao {iter} | f(x) = {f_xmed:.6f} | xm = {xm:.6f}")
-    print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-    return xm, iter
+    precisaoFinal = abs(func.subs(var, xm))
+    print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f} | Precisao Final: {float(precisaoFinal)}")
+    return xm, iter, precisaoFinal
 
 
 # ------------------------- MÉTODO DE NEWTON-RAPHSON -------------------------
@@ -73,8 +76,9 @@ def NewtonRaphson(func, derivate, x0, precisao, var):
         f_xn = abs(func.subs(var, x0))
         print(f"Iteracao {iter} | f(x) = {f_xn:.6f}")
         x0 = xn
-    print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f}")
-    return xn, iter
+    precisaoFinal = abs(func.subs(var, xn))
+    print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f} | Precisao Final: {float(precisaoFinal)}")
+    return xn, iter, precisaoFinal
 
 
 # ------------------------- MÉTODO DA SECANTE -------------------------
@@ -91,6 +95,7 @@ def Secante(func, x0, x1, precisao, var):
         x1 = xm
 
         print(f"Iteracao {iter} | f(x) = {f_xm:.6f}")
-    print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f}")
-    return xm, iter
+    precisaoFinal = abs(func.subs(var, xm))
+    print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f} | Precisao Final: {float(precisaoFinal)}")
+    return xm, iter, precisaoFinal
 
