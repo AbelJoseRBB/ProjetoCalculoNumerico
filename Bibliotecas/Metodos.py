@@ -1,6 +1,7 @@
 # Importa bibliotecas necessárias 
 import time 
 import sympy as sp
+import math
 
 # Define o limite de iterações para evitar loops infinitos 
 MaxIter = 100
@@ -97,27 +98,41 @@ def FalsaPos(func, xe, xd, precisao, var):
 # ------------------------- MÉTODO DE NEWTON-RAPHSON -------------------------
 @getTime
 def NewtonRaphson(func, derivate, x0, precisao, var):
-    iter = 0
-    f_xn = 1
-    
-    while f_xn > precisao:
-        iter += 1
+    x = x0
+    iteracoes = 0
+    f_x = abs(float(func.subs(var, x)))
+
+    while f_x > precisao:
+        iteracoes += 1
+
         # Verifica se a derivada é próxima de zero
-        deriv_valor = float(derivate.subs(var, x0))
-        if abs(deriv_valor) < 1e-10:
-            raise ValueError("Derivada próxima de zero - O método falhou")
-            
-        xn = x0 - func.subs(var, x0) / deriv_valor
-        f_xn = abs(func.subs(var, x0))
-        print(f"Iteracao {iter} | f(x) = {f_xn:.6f}")
-        x0 = xn
-        
-        if iter >= MaxIter:
-            raise ValueError("Número máximo de iterações atingido")
-            
-    precisaoFinal = abs(func.subs(var, xn))
-    print(f"Convergiu apos {iter} iteracoes: raiz = {xn:.9f} | Precisao Final: {float(precisaoFinal)}")
-    return xn, iter, precisaoFinal
+        df_x = float(derivate.subs(var, x))
+        if abs(df_x) < 1e-12:
+            raise ValueError(f"Derivada próxima de zero em x = {x:.9f} - O método falhou")
+
+        # Calcula próximo x
+        x_new = x - float(func.subs(var, x)) / df_x
+        f_new = abs(float(func.subs(var, x_new)))
+
+        print(f"Iteração {iteracoes}: x = {x_new:.9f}, f(x) = {f_new:.9f}")
+
+        # Verifica se o método está divergindo
+        if abs(x_new) > 1e10 or abs(x_new - x) > 1e5:
+            raise ValueError("O método está divergindo para o infinito")
+        if math.isnan(x_new):
+            raise ValueError("O método encontrou um valor indeterminado (NaN)")
+
+        # Atualiza x e f_x
+        x, f_x = x_new, f_new
+
+        # Verifica limite de iterações
+        if iteracoes >= MaxIter:
+            raise ValueError("Número máximo de iterações atingido sem convergência")
+
+    precisaoFinal = abs(float(func.subs(var, x)))
+    print(f"Convergiu após {iteracoes} iterações: raiz = {x:.9f} | Precisão Final = {precisaoFinal:.12f}")
+
+    return x, iteracoes, precisaoFinal
 
 
 # ------------------------- MÉTODO DA SECANTE -------------------------
