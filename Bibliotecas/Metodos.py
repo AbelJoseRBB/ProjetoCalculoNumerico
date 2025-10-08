@@ -69,12 +69,29 @@ def FalsaPos(func, xe, xd, precisao, var):
         print("Aviso: Não há mudança de sinal no intervalo fornecido.")
         raise ValueError("Não há mudança de sinal no intervalo fornecido.")
 
+     
+    
     iteracoes = 0
     while iteracoes < MaxIter:
+
+        if abs(f_xe) < precisao and abs(f_xd) < precisao:
+            raise ValueError("Ambos valores sugeridos são raízes")
+        elif abs(f_xe) < precisao:
+            print(f"Iteração {iteracoes}: x = {xe:.9f}, f(xm) = {0:.9f}")
+            print(f"Convergência atingida após {iteracoes} iterações.")
+            return xe, iteracoes, 0 # xe já é raiz
+        elif abs(f_xd) < precisao:
+            print(f"Iteração {iteracoes}: x = {xe:.9f}, f(xm) = {0:.9f}")
+            print(f"Convergência atingida após {iteracoes} iterações.")
+            return xd, iteracoes, 0   # xd já é raiz
+    
+         
         iteracoes += 1
         # Fórmula da Falsa Posição
         xm = (xe * f_xd - xd * f_xe) / (f_xd - f_xe)
         f_xm = float(func.subs(var, xm))
+
+        
 
         print(f"Iteração {iteracoes}: xm = {xm:.9f}, f(xm) = {f_xm:.9f}")
 
@@ -111,7 +128,7 @@ def NewtonRaphson(func, derivate, x0, precisao, var):
             raise ValueError(f"Derivada próxima de zero em x = {x:.9f} - O método falhou")
 
         # Calcula próximo x
-        x_new = x - float(func.subs(var, x)) / df_x
+        x_new = float(x) - float(func.subs(var, x)) / float(df_x)
         f_new = abs(float(func.subs(var, x_new)))
 
         print(f"Iteração {iteracoes}: x = {x_new:.9f}, f(x) = {f_new:.9f}")
