@@ -68,6 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault(); // impede o recarregamento da página
 
+  // Limpa resultado anterior e mostra loading
+  resultadoTexto.innerHTML = '<p>Calculando...</p>';
+
   // Pega os valores informados no formulário
   const funcao = document.getElementById("funcao").value;
   const metodo = metodoSelect.value;
@@ -85,35 +88,43 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    // Envia a requisição POST para o servidor Flask
-    const res = await fetch("http://127.0.0.1:5000/resolver", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
+        const res = await fetch("http://127.0.0.1:5000/resolver", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
 
-    // Caso ocorra erro de comunicação
-    if (!res.ok) throw new Error("Erro ao se comunicar com o servidor Flask.");
+        const resultado = await res.json();
 
-    // Recebe o resultado do backend
-    const resultado = await res.json();
+        if (!resultado.sucesso) {
+            // Exibe mensagem de erro em vermelho
+            resultadoTexto.innerHTML = `
+                <p style="color: #ff5252; font-weight: bold;">
+                    Erro: ${resultado.erro}
+                </p>
+            `;
+            return;
+        }
 
-    // Exibe os resultados numéricos abaixo do formulário
-    resultadoTexto.innerHTML = `
-      <p><strong>Método:</strong> ${resultado.metodo}</p>
-      <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
-      <p><strong>Precisão final:</strong> ${resultado.precisaoFinal.toExponential(2)}</p>
-      <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
-      <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
-    `;
+        // Exibe os resultados numéricos normalmente
+        resultadoTexto.innerHTML = `
+            <p><strong>Método:</strong> ${resultado.metodo}</p>
+            <p><strong>Raiz encontrada:</strong> ${resultado.raiz.toFixed(6)}</p>
+            <p><strong>Precisão final:</strong> ${resultado.precisaoFinal.toExponential(2)}</p>
+            <p><strong>Iterações:</strong> ${resultado.iteracoes}</p>
+            <p><strong>Tempo:</strong> ${(resultado.tempo * 1000).toFixed(3)} ms</p>
+        `;
 
-    // Atualiza os gráficos com os novos valores
-    atualizarGraficos(resultado);
-  } catch (error) {
-    // Caso o Flask não esteja rodando, mostra erro na tela
-    console.error(error);
-    resultadoTexto.innerHTML = `<p style="color:red;">Erro: não foi possível se conectar ao backend.</p>`;
-  }
+        // Atualiza os gráficos com os novos valores
+        atualizarGraficos(resultado);
+    } catch (error) {
+        console.error(error);
+        resultadoTexto.innerHTML = `
+            <p style="color: #ff5252; font-weight: bold;">
+                Erro: não foi possível se conectar ao backend.
+            </p>
+        `;
+    }
 });
 
 
