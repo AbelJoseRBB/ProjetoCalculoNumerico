@@ -138,28 +138,42 @@ def NewtonRaphson(func, derivate, x0, precisao, var):
 # ------------------------- MÉTODO DA SECANTE -------------------------
 @getTime
 def Secante(func, x0, x1, precisao, var):
-    iter = 0
-    f_xm = 1
+    iteracoes = 0
+    f_x0 = float(func.subs(var, x0))
+    f_x1 = float(func.subs(var, x1))
+    ultimo_x = x1
+    xm = x1
 
-    while f_xm > precisao:
-        iter += 1
-        denominador = float(func.subs(var, x1) - func.subs(var, x0))
-        
+    while abs(f_x1) > precisao:
+        iteracoes += 1
+        denominador = f_x1 - f_x0
+
         # Verifica se o denominador é próximo de zero
-        if abs(denominador) < 1e-10:
-            raise ValueError("Denominador próximo de zero - O método falhou")
-            
-        xm = (x0 * func.subs(var, x1) - x1 * func.subs(var, x0)) / denominador
-        f_xm = abs(func.subs(var, xm))
-        x0 = x1
-        x1 = xm
-        
-        if iter >= MaxIter:
-            raise ValueError("Número máximo de iterações atingido")
+        if abs(denominador) < 1e-12:
+            raise ValueError(f"Denominador próximo de zero - O método falhou na iteração {iteracoes}")
 
-        print(f"Iteracao {iter} | f(x) = {f_xm:.6f}")
-        
-    precisaoFinal = abs(func.subs(var, xm))
-    print(f"Convergiu apos {iter} iteracoes: raiz = {xm:.9f} | Precisao Final: {float(precisaoFinal)}")
-    return xm, iter, precisaoFinal
+        # Calcula próximo x
+        xm = x1 - f_x1 * (x1 - x0) / denominador
+        f_xm = float(func.subs(var, xm))
 
+        # Checa divergência ou valores inválidos
+        if abs(xm) > 1e10 or abs(xm - ultimo_x) > 1e5:
+            raise ValueError("O método está divergindo para o infinito")
+        if math.isnan(xm):
+            raise ValueError("O método encontrou um valor indeterminado (NaN)")
+
+        print(f"Iteração {iteracoes}: xm = {xm:.9f}, f(xm) = {f_xm:.9f}")
+
+        # Atualiza valores para próxima iteração
+        ultimo_x = x1
+        x0, f_x0 = x1, f_x1
+        x1, f_x1 = xm, f_xm
+
+        # Limite de iterações
+        if iteracoes >= MaxIter:
+            raise ValueError("Número máximo de iterações atingido sem convergência")
+
+    precisaoFinal = abs(float(func.subs(var, xm)))
+    print(f"Convergiu após {iteracoes} iterações: raiz = {xm:.9f} | Precisão Final = {precisaoFinal:.12f}")
+
+    return xm, iteracoes, precisaoFinal
