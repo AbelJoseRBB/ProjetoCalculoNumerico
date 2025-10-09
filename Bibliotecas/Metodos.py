@@ -30,7 +30,7 @@ def Bissec(func, a, b, precisao, var):
     f_a = float(func.subs(var, a))
     f_b = float(func.subs(var, b))
     
-    if f_a * f_b > 0:
+    if f_a * f_b >= 0:
         print("Aviso: Não há mudança de sinal no intervalo fornecido.")
         raise ValueError("Não há mudança de sinal no intervalo fornecido.")
     
@@ -44,8 +44,9 @@ def Bissec(func, a, b, precisao, var):
         
         # Critério de parada
         if abs(f_xm) <= precisao or abs(b - a)/2 < precisao:
+            precisao_final = abs(float(func.subs(var, xm)))
             print(f"Convergência atingida após {iteracoes} iterações.")
-            return xm, iteracoes, f_xm
+            return xm, iteracoes, precisao_final
         
         # Atualiza intervalo
         if f_a * f_xm < 0:
@@ -65,26 +66,12 @@ def FalsaPos(func, xe, xd, precisao, var):
     f_xe = float(func.subs(var, xe))
     f_xd = float(func.subs(var, xd))
 
-    if f_xe * f_xd > 0:
+    if f_xe * f_xd >= 0:
         print("Aviso: Não há mudança de sinal no intervalo fornecido.")
         raise ValueError("Não há mudança de sinal no intervalo fornecido.")
 
-     
-    
     iteracoes = 0
     while iteracoes < MaxIter:
-
-        if abs(f_xe) < precisao and abs(f_xd) < precisao:
-            raise ValueError("Ambos valores sugeridos são raízes")
-        elif abs(f_xe) < precisao:
-            print(f"Iteração {iteracoes}: x = {xe:.9f}, f(xm) = {0:.9f}")
-            print(f"Convergência atingida após {iteracoes} iterações.")
-            return xe, iteracoes, 0 # xe já é raiz
-        elif abs(f_xd) < precisao:
-            print(f"Iteração {iteracoes}: x = {xe:.9f}, f(xm) = {0:.9f}")
-            print(f"Convergência atingida após {iteracoes} iterações.")
-            return xd, iteracoes, 0   # xd já é raiz
-    
          
         iteracoes += 1
         # Fórmula da Falsa Posição
